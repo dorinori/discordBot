@@ -1,9 +1,15 @@
 # bot.py
+
+#things need to fix, error message when not pass through argument 
+#when needed, help statements with description, require mention for punch
+#statements
+
 import discord
 import random
 import os
 import requests
 import json
+import glob
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -19,7 +25,6 @@ async def on_ready():
     await client.change_presence(activity = discord.Activity(
                             type = discord.ActivityType.watching, 
                             name = 'The Untamed'))
-
 # @client.event
 # async def on_member_join(member):
 #     print(f'{member} has joined a server.')
@@ -112,6 +117,23 @@ async def ud(ctx, *, arg):
 @client.command(description='This is the full description')
 async def clear(ctx, amount: int):
     await ctx.channel.purge(limit = amount + 1)
+
+@client.command(description='punch command')
+async def punch(ctx, person):
+    rand_int = random.randint(0, 3)
+    files = ['./punch/m_punch.gif', './punch/j_punch1.gif',
+    './punch/moon_punch.gif']
+    print(rand_int)
+    if (rand_int == 3):
+        embed = discord.Embed(color = discord.Colour.blue(), 
+        description = "Thats not nice! Here, have a smooch from Megan instead.")
+        await ctx.send(file=discord.File('./punch/m_kiss.gif'))
+        await ctx.send(embed = embed)
+    else:
+        embed = discord.Embed(color = discord.Colour.blue(), 
+        description = f'{ctx.author.name} punched {person}')
+        await ctx.send(file=discord.File(files[rand_int]))
+        await ctx.send(embed = embed)
 
 @client.command(aliases = ['8ball'], description='This is the full description')
 async def _8ball(ctx, *, question):
