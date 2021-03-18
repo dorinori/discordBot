@@ -24,12 +24,13 @@ A simple bot I made for recreational use. You can use it for moderation use or t
 
 ### Built With
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
+APIs used:
+* Tenor API
+* Urban Dictionary API
 
 ### Getting Started
 
-1. Open the link at: [https://discord.com/api/oauth2/authorize?client_id=819727709105160222&permissions=8&scope=bot](https://discord.com/api/oauth2/authorize?client_id=819727709105160222&permissions=8&scope=bot)
+1. Invite the bot to your server here: [https://discord.com/api/oauth2/authorize?client_id=819727709105160222&permissions=8&scope=bot](https://discord.com/api/oauth2/authorize?client_id=819727709105160222&permissions=8&scope=bot)
 
 2. Choose a server you would like to add the bot to and authorize all permissions.
 
@@ -44,10 +45,12 @@ Use this space to show useful examples of how a project can be used. Additional 
 |---------|-------------|
 | `.help` | List of all the commands |
 | `.8ball <question>` | Try asking the 8ball a question |
-| `.ud <searchWord>` | Search a word up on Urban Dictionary. |
+| `.ud <word> or .urbandictionary <word>` | Search a word up on Urban Dictionary. |
 | `.punch <person>` | Need to release some anger out? Give this command a try. |
 | `.clear <amount>` | Delete a specified number of messages.  |
 | `.gif` | Sends a random GIF of a really cute guy! |
+| `.rps <choice>` | Play rock paper scissors with our bot. |
+| `.ping` | Check your current ping. |
 
 
 <!-- CONTACT -->

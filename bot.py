@@ -2,7 +2,7 @@
 
 #things need to fix, error message when not pass through argument 
 #when needed, help statements with description, require mention for punch
-#statements
+#statements, urban dictionary take in phrases too
 
 import discord
 import random
@@ -33,16 +33,16 @@ async def on_ready():
 # async def on_member_remove(member):
 #     print(f'{member} has left a server.')
 
-# @client.command()
-# async def ping(ctx):
-#     await ctx.send(f'Ping is {round(client.latency * 1000)} ms') 
-
 @client.event
 async def on_command_error(ctx,error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send('Command not found.')
 
-@client.command(description='This is the full description')
+@client.command(help = "check your current ping")
+async def ping(ctx):
+    await ctx.send(f'Ping is {round(client.latency * 1000)} ms') 
+
+@client.command(help = 'just try it ;)')
 async def gif(ctx):
     response = requests.get('https://api.tenor.com/v1/search?q=肖战&key=' + os.environ['gif_key'] + '&limit=50')
     data = json.loads(response.text)
@@ -50,7 +50,7 @@ async def gif(ctx):
     gif_url = data['results'][gif_rand]['media'][0]['gif']['url']
     await ctx.send(gif_url)
 
-@client.command(description='This is the full description')
+@client.command(help = 'loser')
 async def sean(ctx):
     response = requests.get('http://api.urbandictionary.com/v0/define?term=sean+wang')
     data = json.loads(response.text)
@@ -66,7 +66,7 @@ async def sean(ctx):
     embed.add_field(name= "Example", value= example, inline = False)
     await ctx.send(embed = embed)
 
-@client.command(description='This is the full description')
+@client.command(help = 'xd')
 async def ashley(ctx):
     response = requests.get('http://api.urbandictionary.com/v0/define?term=ashley+gong')
     data = json.loads(response.text)
@@ -82,7 +82,7 @@ async def ashley(ctx):
     embed.add_field(name= "Example", value= example, inline = False)
     await ctx.send(embed = embed)
 
-@client.command(description='This is the full description')
+@client.command(help ='lol')
 async def jesse(ctx):
     response = requests.get('http://api.urbandictionary.com/v0/define?term=jesse+ge')
     data = json.loads(response.text)
@@ -98,7 +98,7 @@ async def jesse(ctx):
     embed.add_field(name= "Example", value= example, inline = False)
     await ctx.send(embed = embed)
 
-@client.command(Aliases = ['urbandictionary'], description='This is the full description')
+@client.command(aliases = ['urbandictionary'], help = "search any term ")
 async def ud(ctx, *, arg):
     response = requests.get(f'http://api.urbandictionary.com/v0/define?term={arg}')
     data = json.loads(response.text)
@@ -114,16 +114,15 @@ async def ud(ctx, *, arg):
     embed.add_field(name = "Example", value = example, inline = False)
     await ctx.send(embed = embed)
 
-@client.command(description='This is the full description')
+@client.command(help='delete the last <amount> of messages')
 async def clear(ctx, amount: int):
     await ctx.channel.purge(limit = amount + 1)
 
-@client.command(description='punch command')
+@client.command(help = 'who would you like to punch?')
 async def punch(ctx, person):
     rand_int = random.randint(0, 3)
     files = ['./punch/m_punch.gif', './punch/j_punch1.gif',
     './punch/moon_punch.gif']
-    print(rand_int)
     if (rand_int == 3):
         embed = discord.Embed(color = discord.Colour.blue(), 
         description = "Thats not nice! Here, have a smooch from Megan instead.")
@@ -135,8 +134,30 @@ async def punch(ctx, person):
         await ctx.send(file=discord.File(files[rand_int]))
         await ctx.send(embed = embed)
 
-@client.command(aliases = ['8ball'], description='This is the full description')
-async def _8ball(ctx, *, question):
+@client.command(help = 'try playing rock paper scissors with our bot')
+async def rps(ctx, choice):
+    hands = ['Rock', 'Paper', 'Scissors']
+    outcome = random.choice(hands)
+    if (choice.lower() == outcome.lower()):
+        await ctx.send(f"{outcome}. Don't expect this to keep happening.")
+    elif (choice.lower() == 'scissors'):
+        if (outcome.lower() == 'rock'):
+            await ctx.send(f"ROCK! Haha, you lose.")
+        else:
+            await ctx.send(f"Paper. Hmp, i'll beat you next time.")
+    elif (choice.lower() == 'rock'):
+        if (outcome.lower() == 'paper'):
+            await ctx.send(f"Paper. You loser.")
+        else:
+            await ctx.send(f"Scissors, not cool.")
+    elif (choice.lower() == 'paper'):
+        if (outcome.lower() == 'rock'):
+            await ctx.send(f"Rock. You're kind of bad at this game...")
+        else:
+            await ctx.send(f"Scissors. Darn, I can't believe I lost to *you*")
+
+@client.command(aliases = ['8ball'], help= "ask me a question")
+async def eightball(ctx, *, question):
     result = ["It is certain.",
         "It is decidedly so.",
         "Without a doubt.",
@@ -163,6 +184,26 @@ async def _8ball(ctx, *, question):
 async def clear_error(ctx,error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send('Please specify an amount of message to delete.')
+
+@ud.error
+async def ud_error(ctx,error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send('Please specify which word you want to search.')
+
+@rps.error
+async def rps_error(ctx,error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send('Please specify which hand youre throwing: rock paper or scissors.')
+
+@punch.error
+async def punch_error(ctx,error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send('Please specify who you want to punch.')
+
+@eightball.error
+async def eightball_error(ctx,error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send('Please specify the question you want to ask.')
 
 # @client.command(pass_context = True)
 # async def help(ctx):
